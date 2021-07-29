@@ -1,0 +1,42 @@
+/* Styles go here */
+body {
+	background-color: #ddf8ff8e;
+	/* position: relative; */
+}
+
+a {
+	cursor: pointer;
+}
+
+thead {
+	background: #005296;
+}
+
+tbody {
+	background: #f8f8f8a6;
+}
+
+.bg-img {
+	/* position: absolute; */
+	/*top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); */
+	display: inline-block;
+	opacity: 0.4;
+}
+.row {
+	/* z-index: 1; */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+p {
+	color: #fff;
+	font-weight: bold;
+}
+
+button {
+	border: none;
+	outline: none;
+}
