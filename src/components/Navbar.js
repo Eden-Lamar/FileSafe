@@ -4,7 +4,7 @@ import box from "../box.jpg";
 
 export default function Navbar({ account }) {
 	return (
-		<nav className="navbar navbar-dark bg-dark p-0 text-monospace">
+		<nav className="navbar navbar-dark bg-primary">
 			<a
 				className="navbar-brand col-sm-3 col-md-2 mr-0"
 				href="http://www.dappuniversity.com/bootcamp"

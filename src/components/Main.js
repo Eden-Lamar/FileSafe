@@ -1,25 +1,59 @@
 import React, { Component } from "react";
 import { Spinner } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { convertBytes } from "./helpers";
 import moment from "moment";
 import box from "../box.jpg";
 import "./App.css";
 
 class Main extends Component {
+	state = {
+		animationType: "",
+		displayNone: { display: "" },
+		rowDivStyle: {
+			all: "",
+		},
+	};
+
+	fileBtn = () => {
+		document.getElementById("defaultBtn").click();
+	};
+
+	toggleAnimation = () => {
+		this.setState({ animationType: "animate__animated animate__slideOutUp" });
+		setTimeout(() => {
+			this.setState({ displayNone: { display: "none" } });
+			this.setState({
+				rowDivStyle: {
+					all: "revert",
+				},
+			});
+		}, 1000);
+
+		console.log(typeof this.state.animationType);
+	};
+
+	handleBlur = (e) => {
+		// e.target.value = "";
+	};
+
 	render() {
 		return (
-			<div className="container mt-5 text-center">
-				<img src={box} className="align-top" alt="" className="bg-img" />
-				<div className="row">
-					<main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: "1024px" }}>
+			<div className="text-center container-div">
+				{/* <img src={box} className="align-top" alt="" className="bg-img" /> */}
+				<div className={this.state.animationType} style={this.state.displayNone}>
+					<div className="overlay"></div>
+					<div className="overlay-div">
+						<h1>WELCOME TO FILESAFE</h1>
+						<button onClick={this.toggleAnimation}>Get Started</button>
+					</div>
+				</div>
+
+				<div className="row-div" style={this.state.rowDivStyle}>
+					<main className="container">
 						<div className="content">
 							<p>&nbsp;</p>
-							<div className="card mb-3 mx-auto bg-dark" style={{ maxWidth: "512px" }}>
-								<h2 className="text-white text-monospace bg-dark">
-									<b>
-										<ins>Share File</ins>
-									</b>
-								</h2>
+							<div>
 								<form
 									onSubmit={(event) => {
 										event.preventDefault();
@@ -27,67 +61,82 @@ class Main extends Component {
 										this.props.uploadFile(description);
 									}}
 								>
-									<div className="form-group">
-										<br></br>
+									<div className="form-div">
+										{/* <br></br> */}
 										<input
+											onBlur={this.handleBlur}
 											id="fileDescription"
 											type="text"
 											ref={(input) => {
 												this.fileDescription = input;
 											}}
-											className="form-control text-monospace"
-											placeholder="Description..."
+											className="form-input"
+											// placeholder="Description"
+											autoComplete="off"
 											required
 										/>
+										<label htmlFor="description" className="form-label">
+											Description
+										</label>
 									</div>
-									<input type="file" onChange={this.props.captureFile} className="text-white text-monospace" />
-									<button type="submit" className="btn-primary btn-block">
+
+									<div className="wrapper input-btn" onClick={this.fileBtn}>
+										<div className="image">{/* <img src={box} alt="image" /> */}</div>
+										<div className="upload-content">
+											<div className="icon">
+												<i className="fas fa-cloud-upload-alt"></i>
+											</div>
+											<div className="text">{this.props.name === null ? "No File Chosen, Yet!" : ""}</div>
+										</div>
+
+										{/* <div id="cancel-btn">
+											<i className="fas fa-times"></i>
+										</div> */}
+										<div
+											className="file-name"
+											style={this.props.name === null ? { display: "none" } : { display: "block" }}
+										>
+											{this.props.name}
+										</div>
+									</div>
+
+									<input
+										type="file"
+										onChange={this.props.captureFile}
+										id="defaultBtn"
+										className="text-white text-monospace"
+										hidden
+									/>
+
+									{/* <button id="custom-btn" onClick={}>Choose a File</button> */}
+									<button type="submit" id="custom-btn">
 										<b>UPLOAD</b>
 									</button>
 								</form>
 							</div>
-							<p>&nbsp;</p>
 							<div>
-								<table
-									className="table-sm table-bordered table-responsive text-monospace"
-									style={{ width: "1000px", maxHeight: "450px" }}
-								>
-									<thead style={{ fontSize: "15px" }}>
-										<tr className="text-white">
-											<th scope="col" style={{ width: "10px" }}>
-												id
-											</th>
-											<th scope="col" style={{ width: "200px" }}>
-												name
-											</th>
-											<th scope="col" style={{ width: "230px" }}>
-												description
-											</th>
-											<th scope="col" style={{ width: "120px" }}>
-												type
-											</th>
-											<th scope="col" style={{ width: "90px" }}>
-												size
-											</th>
-											<th scope="col" style={{ width: "90px" }}>
-												date
-											</th>
-											<th scope="col" style={{ width: "120px" }}>
-												uploader/view
-											</th>
-											<th scope="col" style={{ width: "120px" }}>
-												hash/view/get
-											</th>
+								<Table responsive striped bordered hover variant="" className="table-class">
+									<thead>
+										<tr className="" style={{ background: "#3a8ffe" }}>
+											<th>ID</th>
+											<th>Name</th>
+											<th>Description</th>
+											{/* <th>Type</th> */}
+											<th>Size</th>
+											<th>Date</th>
+											<th>Uploader</th>
+											<th>Hash</th>
+											<th>Share via Mail</th>
 										</tr>
 									</thead>
 									{this.props.files.map((file, key) => {
 										return (
-											<tbody style={{ fontSize: "12px" }} key={key}>
+											<tbody key={key}>
 												<tr>
 													<td>{file.fileId}</td>
 													<td>{file.fileName}</td>
 													<td>{file.fileDescription}</td>
-													<td>{file.fileType}</td>
+													{/* <td>{file.fileType}</td> */}
 													<td>{convertBytes(file.fileSize)}</td>
 													<td>{moment.unix(file.uploadTime).format("h:mm:ss A M/D/Y")}</td>
 													<td>
@@ -108,11 +157,21 @@ class Main extends Component {
 															{file.fileHash.substring(0, 10)}...
 														</a>
 													</td>
+													<td>
+														<a
+															className="mail-link"
+															href={`mailto:JohnDoe@example.com?subject=File Safe link&body=Here's the link to the file: ${
+																"https://ipfs.infura.io/ipfs/" + file.fileHash
+															}`}
+														>
+															<i className="icon far fa-paper-plane"></i>
+														</a>
+													</td>
 												</tr>
 											</tbody>
 										);
 									})}
-								</table>
+								</Table>
 
 								{this.props.loading ? (
 									<div id="loader" className="text-center mt-5">

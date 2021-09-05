@@ -49,7 +49,7 @@ class App extends Component {
 				});
 			}
 		} else {
-			window.alert("DStorage contract not deployed to detected network.");
+			window.alert("FileSafe Contract Not Deployed To Detected Network.");
 		}
 	}
 
@@ -67,7 +67,7 @@ class App extends Component {
 				type: file.type,
 				name: file.name,
 			});
-			// console.log("buffer", this.state.buffer);
+			// console.log("name", this.state.name);
 		};
 	};
 
@@ -129,6 +129,7 @@ class App extends Component {
 					captureFile={this.captureFile}
 					uploadFile={this.uploadFile}
 					loading={this.state.loading}
+					name={this.state.name}
 				/>
 			</div>
 		);
