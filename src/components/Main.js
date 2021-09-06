@@ -159,12 +159,11 @@ class Main extends Component {
 													</td>
 													<td>
 														<a
-															className="mail-link"
-															href={`mailto:JohnDoe@example.com?subject=File Safe link&body=Here's the link to the file: ${
-																"https://ipfs.infura.io/ipfs/" + file.fileHash
-															}`}
+															className="icon mail-link"
+															href={`mailto:JohnDoe@example.com?subject=File Safe link&body=Here's the link to the file: https://ipfs.infura.io/ipfs/${file.fileHash}`}
 														>
-															<i className="icon far fa-paper-plane"></i>
+															{/* <i className="icon far fa-paper-plane"></i> */}
+															📧
 														</a>
 													</td>
 												</tr>
